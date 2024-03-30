@@ -93,7 +93,7 @@ class BookmarkView extends GetView<BookmarkController> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: height * 0.030,
+                            height: height * 0.025,
                           ),
                           kontenHistoryPeminjaman(),
                         ],
@@ -116,7 +116,7 @@ class BookmarkView extends GetView<BookmarkController> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: height * 0.015,
+                            height: height * 0.025,
                           ),
                           kontenKoleksiBuku(),
                         ],
@@ -336,194 +336,151 @@ class BookmarkView extends GetView<BookmarkController> {
   Widget kontenKoleksiBuku() {
     const Color background = Color(0xFF0C1008);
     const Color borderColor = Color(0xFF424242);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Buku yang disimpan",
-          maxLines: 1,
-          style: GoogleFonts.inriaSans(
-            fontWeight: FontWeight.w800,
-            color: Colors.white,
-            fontSize: 24.0,
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        SizedBox(
-          child: Obx((){
-              if (controller.koleksiBook.isNull) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.black,
-                    backgroundColor: Colors.grey,
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Color(0xFFEA1818)),
+    return Obx((){
+        if (controller.koleksiBook.isNull) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.black,
+              backgroundColor: Colors.grey,
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(Color(0xFFEA1818)),
+            ),
+          );
+        } else if (controller.koleksiBook.value!.isEmpty) {
+          return Center(
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  color: background,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: borderColor,
+                    width: 1.3,
+                  )
+              ),
+              child: Center(
+                child: Text(
+                  'Belum ada koleksi buku yang tersimpan',
+                  style: GoogleFonts.inriaSans(
+                    color: Colors.white,
+                    fontSize: 16,
                   ),
-                );
-              } else if (controller.koleksiBook.value!.isEmpty) {
-                return Center(
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: background,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: borderColor,
-                          width: 1.3,
-                        )
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Belum ada koleksi buku yang tersimpan',
-                        style: GoogleFonts.inriaSans(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                );
-              } else {
-                return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 1.0,
-                    childAspectRatio: 3 / 6,
-                  ),
-                  itemCount: controller.koleksiBook.value!.length,
-                  itemBuilder: (context, index) {
-                    var dataKoleksi = controller.koleksiBook.value![index];
-                    return InkWell(
-                      onTap: () {
-                        Get.toNamed(
-                          Routes.DETAILBUKU,
-                          parameters: {
-                            'id': (dataKoleksi.bukuID ?? 0).toString(),
-                            'judul': (dataKoleksi.judul!).toString(),
-                          },
-                        );
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          );
+        } else {
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 1.0,
+              childAspectRatio: 3 / 6,
+            ),
+            itemCount: controller.koleksiBook.value!.length,
+            itemBuilder: (context, index) {
+              var dataKoleksi = controller.koleksiBook.value![index];
+              return InkWell(
+                onTap: () {
+                  Get.toNamed(
+                    Routes.DETAILBUKU,
+                    parameters: {
+                      'id': (dataKoleksi.bukuID ?? 0).toString(),
+                      'judul': (dataKoleksi.judul!).toString(),
+                    },
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: Stack(
                         children: [
-                          Expanded(
-                            flex: 10,
-                            child: Stack(
-                              children: [
-                                SizedBox(
-                                  height: 175, // Sesuaikan tinggi gambar sesuai kebutuhan Anda
-                                  child: AspectRatio(
-                                    aspectRatio: 4 / 5,
-                                    child: Image.network(
-                                      dataKoleksi.coverBuku.toString(),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  left: 0,
-                                  child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFEA1818)
-                                          .withOpacity(0.9),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        (index + 1)
-                                            .toString(), // Nomor urut buku
-                                        style: GoogleFonts.inriaSans(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: 0,
-                                  bottom: -0,
-                                  right: 0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.80),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              const FaIcon(
-                                                FontAwesomeIcons.solidHeart,
-                                                color: Color(0xFFEA1818),
-                                                size: 20,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Text(
-                                                "Disimpan",
-                                                style: GoogleFonts.inriaSans(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          SizedBox(
+                            height: 175, // Sesuaikan tinggi gambar sesuai kebutuhan Anda
+                            child: AspectRatio(
+                              aspectRatio: 4 / 5,
+                              child: Image.network(
+                                dataKoleksi.coverBuku.toString(),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          Expanded(
-                            flex: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 3.0, vertical: 3.0),
-                              child: Text(
-                                dataKoleksi.judul!,
-                                style: GoogleFonts.inriaSans(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                  fontSize: 16.0,
+                          Positioned(
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.80),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const FaIcon(
+                                          FontAwesomeIcons.solidHeart,
+                                          color: Color(0xFFEA1818),
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          "Disimpan",
+                                          style: GoogleFonts.inriaSans(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
                         ],
                       ),
-                    );
-                  },
-                );
-              }
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 3.0, vertical: 3.0),
+                        child: Text(
+                          dataKoleksi.judul!,
+                          style: GoogleFonts.inriaSans(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             },
-          ),
-        ),
-      ],
+          );
+        }
+      },
     );
   }
 }

@@ -45,7 +45,7 @@ class BookmarkController extends GetxController with StateMixin{
         final ResponseKoleksiBook responseKoleksi = ResponseKoleksiBook.fromJson(responseKoleksiBuku.data);
         final ResponseHistoryPeminjaman responseHistory = ResponseHistoryPeminjaman.fromJson(responseHistoryPeminjaman.data);
 
-        if (responseKoleksi.data!.isEmpty && responseHistory.data!.isEmpty) {
+        if (responseKoleksi.data!.isEmpty || responseHistory.data!.isEmpty) {
           change(null, status: RxStatus.empty());
         } else {
           koleksiBook(responseKoleksi.data!);
@@ -59,7 +59,7 @@ class BookmarkController extends GetxController with StateMixin{
       if (e.response != null) {
         final responseData = e.response?.data;
         if (responseData != null) {
-          final errorMessage = responseData['message'] ?? "Unknown error";
+          final errorMessage = responseData['Message'] ?? "Unknown error";
           change(null, status: RxStatus.error(errorMessage));
         }
       } else {

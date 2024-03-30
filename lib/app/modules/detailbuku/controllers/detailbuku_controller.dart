@@ -182,7 +182,7 @@ class DetailbukuController extends GetxController with StateMixin{
               Navigator.pop(Get.context!, 'OK');
             },
             "Pemberitahuan",
-            "${e.response?.data?['message']}",
+            "${e.response?.data?['Message']}",
             "Ok",
           );
         }

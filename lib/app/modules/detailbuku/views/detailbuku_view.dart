@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -29,6 +30,33 @@ class DetailbukuView extends GetView<DetailbukuController> {
                 color: Colors.white,
                 fontWeight: FontWeight.w700),
           ),
+          actions: [
+            Obx(() {
+              var dataBuku = controller.detailBuku.value?.buku;
+              return SizedBox(
+                width: 50,
+                height: 50,
+                child: IconButton(
+                  icon: Icon(
+                    dataBuku?.status == 'Tersimpan'
+                        ? CupertinoIcons.heart_fill
+                        : CupertinoIcons.suit_heart,
+                    color: dataBuku?.status == 'Tersimpan'
+                        ? const Color(0xFFEA1818)
+                        : Colors.white,
+                    size: 24,
+                  ),
+                  onPressed: () {
+                    if (dataBuku?.status == 'Tersimpan') {
+                      controller.deleteKoleksiBook();
+                    } else {
+                      controller.addKoleksiBuku();
+                    }
+                  },
+                ),
+              );
+            })
+          ],
           iconTheme: const IconThemeData(color: Colors.white),
         ),
         body: Container(
@@ -37,17 +65,16 @@ class DetailbukuView extends GetView<DetailbukuController> {
           color: background,
           child: Stack(
             children: [
-
               SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 95), // Sesuaikan dengan tinggi tombol
-                    child: kontenDataDetailBuku(),
-                  ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 95), // Sesuaikan dengan tinggi tombol
+                  child: kontenDataDetailBuku(),
+                ),
               ),
-
               Positioned(
-                bottom: 0,
+                  bottom: 0,
                   left: 0,
                   right: 0,
                   child: Container(
@@ -63,11 +90,11 @@ class DetailbukuView extends GetView<DetailbukuController> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
                       child: buttonDetailBuku(),
                     ),
-                  )
-              )
+                  ))
             ],
           ),
         ));
@@ -77,8 +104,8 @@ class DetailbukuView extends GetView<DetailbukuController> {
     final height = MediaQuery.of(Get.context!).size.height;
     final width = MediaQuery.of(Get.context!).size.width;
 
-    return GetBuilder<DetailbukuController>(
-      builder: (controller) {
+    return Obx(
+      () {
         if (controller.detailBuku.isNull) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 50),
@@ -314,7 +341,6 @@ class DetailbukuView extends GetView<DetailbukuController> {
                         SizedBox(
                           height: height * 0.005,
                         ),
-
                         Wrap(
                           children: dataKategori!.map((kategori) {
                             return Padding(
@@ -325,13 +351,15 @@ class DetailbukuView extends GetView<DetailbukuController> {
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: const Color(0xFFF5F5F5),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
                                 ),
                                 child: Text(
                                   kategori,
                                   style: GoogleFonts.inriaSans(
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.black, // Sesuaikan dengan warna yang diinginkan
+                                    color: Colors
+                                        .black, // Sesuaikan dengan warna yang diinginkan
                                     fontSize: 16.0,
                                   ),
                                 ),
@@ -339,11 +367,9 @@ class DetailbukuView extends GetView<DetailbukuController> {
                             );
                           }).toList(),
                         ),
-
                         SizedBox(
                           height: height * 0.015,
                         ),
-
                         FittedBox(
                           child: Text(
                             "Penerbit: ${dataBuku.penerbit!}",
@@ -355,11 +381,9 @@ class DetailbukuView extends GetView<DetailbukuController> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-
                         SizedBox(
                           height: height * 0.015,
                         ),
-
                         Text(
                           "Deskripsi Buku:",
                           style: GoogleFonts.inriaSans(
@@ -379,7 +403,6 @@ class DetailbukuView extends GetView<DetailbukuController> {
                           ),
                           textAlign: TextAlign.justify,
                         ),
-
                         SizedBox(
                           height: height * 0.015,
                         ),
@@ -521,84 +544,32 @@ class DetailbukuView extends GetView<DetailbukuController> {
     const Color buttonColor2 = Color(0xFF0C1008);
     const Color borderColor = Color(0xFF424242);
 
-    return GetBuilder<DetailbukuController>(
-      builder: (controller) {
-        var dataBuku = controller.detailBuku.value?.buku;
-        return Row(
-          children: [
-            Flexible(
-              flex: 1,
-              child: SizedBox(
-                width: double.infinity,
-                height: 50.0,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    side: const BorderSide(
-                      color: borderColor,
-                      width: 1.3,
-                    ),
-                  ),
-                  onPressed: () {
-                    // Logika ketika tombol ditekan
-                  },
-                  child: Text(
-                    'Pinjam Buku',
-                    style: GoogleFonts.inriaSans(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Flexible(
-              flex: 1,
-              child: SizedBox(
-                width: double.infinity,
-                height: 50.0,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: dataBuku?.status == 'Tersimpan' ? Colors.white : buttonColor2,
-                    // Ubah warna latar belakang berdasarkan status
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    side: const BorderSide(
-                      color: borderColor,
-                      width: 1.3,
-                    ),
-                  ),
-                  onPressed: () {
-                    if (dataBuku?.status == 'Tersimpan') {
-                      controller.deleteKoleksiBook();
-                    } else {
-                      controller.addKoleksiBuku();
-                    }
-                  },
-                  child: Text(
-                    dataBuku?.status == 'Tersimpan' ? 'Tersimpan' : 'Simpan Buku',
-                    // Ubah teks berdasarkan status
-                    style: GoogleFonts.inriaSans(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: dataBuku?.status == 'Tersimpan' ? Colors.black : Colors.white,
-                      // Ubah warna teks berdasarkan status
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+    return SizedBox(
+      width: double.infinity,
+      height: 50.0,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: buttonColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          side: BorderSide(
+            color: borderColor.withOpacity(0.30),
+            width: 1.3,
+          ),
+        ),
+        onPressed: () {
+          // Logika ketika tombol ditekan
+        },
+        child: Text(
+          'Pinjam Buku',
+          style: GoogleFonts.inriaSans(
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }

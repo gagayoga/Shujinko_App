@@ -162,7 +162,7 @@ class BukuView extends GetView<BukuController> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15),
                   child: SizedBox(
-                    height: 260,
+                    height: 210,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: bukuList!.length,
@@ -222,14 +222,14 @@ class BukuView extends GetView<BukuController> {
                                                     ),
                                                   )
                                                 : RatingBarIndicator(
-                                                    rating: buku.rating!,
+                                                    rating: 5,
                                                     itemCount: 5,
                                                     direction: Axis.horizontal,
                                                     itemSize: 15,
                                                     itemBuilder: (context, _) =>
-                                                        const Icon(
+                                                        Icon(
                                                       Icons.star,
-                                                      color: Colors.white,
+                                                      color: Colors.white.withOpacity(0.3),
                                                     ),
                                                   ),
                                           ),
@@ -248,42 +248,8 @@ class BukuView extends GetView<BukuController> {
                                       fontSize: 14.0,
                                     ),
                                     textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                FittedBox(
-                                  child: Text(
-                                    "Penulis : ${buku.penulis!}",
-                                    style: GoogleFonts.inriaSans(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey,
-                                      fontSize: 10.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                FittedBox(
-                                  child: Text(
-                                    "Penerbit : ${buku.penerbit!}",
-                                    style: GoogleFonts.inriaSans(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey,
-                                      fontSize: 10.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                FittedBox(
-                                  child: Text(
-                                    "${buku.jumlahHalaman!} Halaman",
-                                    style: GoogleFonts.inriaSans(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey,
-                                      fontSize: 10.0,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
@@ -412,7 +378,7 @@ class BukuView extends GetView<BukuController> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15),
                       child: SizedBox(
-                        height: 260, // Sesuaikan tinggi container sesuai kebutuhan Anda
+                        height: 210, // Sesuaikan tinggi container sesuai kebutuhan Anda
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: bukuList!.length,
@@ -471,13 +437,13 @@ class BukuView extends GetView<BukuController> {
                                                   ),
                                                 )
                                                     : RatingBarIndicator(
-                                                  rating: buku.rating!,
+                                                  rating: 5,
                                                   itemCount: 5,
                                                   direction: Axis.horizontal,
                                                   itemSize: 15,
-                                                  itemBuilder: (context, _) => const Icon(
+                                                  itemBuilder: (context, _) =>  Icon(
                                                     Icons.star,
-                                                    color: Colors.white,
+                                                    color: Colors.white.withOpacity(0.40),
                                                   ),
                                                 ),
                                               ),
@@ -487,59 +453,20 @@ class BukuView extends GetView<BukuController> {
                                       ],
                                     ),
                                     const SizedBox(height: 8),
-                                    FittedBox(
+                                    Expanded(
                                       child: Text(
                                         buku.judul!,
                                         style: GoogleFonts.inriaSans(
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white,
-                                            fontSize: 14.0
+                                            fontSize: 16.0
                                         ),
                                         textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
 
-                                    const SizedBox(height: 4),
-
-                                    FittedBox(
-                                      child: Text(
-                                        "Penulis : ${buku.penulis!}",
-                                        style: GoogleFonts.inriaSans(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.grey,
-                                            fontSize: 10.0
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-
-                                    const SizedBox(height: 4),
-
-                                    FittedBox(
-                                      child: Text(
-                                        "Penerbit : ${buku.penerbit!}",
-                                        style: GoogleFonts.inriaSans(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.grey,
-                                            fontSize: 10.0
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-
-                                    const SizedBox(height: 5),
-
-                                    FittedBox(
-                                      child: Text(
-                                        "${buku.jumlahHalaman!} Halaman",
-                                        style: GoogleFonts.inriaSans(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.grey,
-                                            fontSize: 10.0
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),

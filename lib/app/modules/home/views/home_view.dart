@@ -31,57 +31,62 @@ class HomeView extends GetView<HomeController> {
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          width: width,
-          height: bodyHeight,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/assets/images/bg_home.png'),
-                fit: BoxFit.cover,
-              ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
+        child: RefreshIndicator(
+          onRefresh: () async{
+            await controller.getData();
+          },
+          child: Container(
+            width: width,
+            height: bodyHeight,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('lib/assets/images/bg_home.png'),
+                  fit: BoxFit.cover,
+                ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
 
-                  kontenProfile(),
+                    kontenProfile(),
 
-                  Padding(
-                    padding: EdgeInsets.only(top: height * 0.005),
-                    child: kontenText(
-                      "Selamat datang di Shujinko App mulai lah mencari buku favorit anda!!!",
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.005),
+                      child: kontenText(
+                        "Selamat datang di Shujinko App mulai lah mencari buku favorit anda!!!",
+                      ),
                     ),
-                  ),
 
-                  SizedBox(
-                    height: height * 0.025,
-                  ),
-
-                  sectionImage(),
-
-                  Padding(
-                    padding: EdgeInsets.only(top: height * 0.030),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: kontenBukuPopular(),
+                    SizedBox(
+                      height: height * 0.025,
                     ),
-                  ),
 
-                  SizedBox(
-                    height: height * 0.035,
-                  ),
+                    sectionImage(),
 
-                  sectionKategoriBuku(),
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.030),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: kontenBukuPopular(),
+                      ),
+                    ),
 
-                  SizedBox(
-                    height: height * 0.035,
-                  ),
+                    SizedBox(
+                      height: height * 0.035,
+                    ),
 
-                  kontenBukuTerbaru(),
-                ],
+                    sectionKategoriBuku(),
+
+                    SizedBox(
+                      height: height * 0.035,
+                    ),
+
+                    kontenBukuTerbaru(),
+                  ],
+                ),
               ),
             ),
           ),
