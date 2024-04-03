@@ -404,7 +404,7 @@ class DetailbukuView extends GetView<DetailbukuController> {
                           textAlign: TextAlign.justify,
                         ),
                         SizedBox(
-                          height: height * 0.015,
+                          height: height * 0.030,
                         ),
                         Text(
                           "Ulasan Buku",

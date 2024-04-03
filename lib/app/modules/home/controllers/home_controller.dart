@@ -8,9 +8,9 @@ import '../../../data/model/response_kategori.dart';
 import '../../../data/provider/api_provider.dart';
 
 class HomeController extends GetxController with StateMixin {
-  var newBooks = Rxn<List<DataBookNew>>();
-  var popularBooks = Rxn<List<DataPopularBook>>();
-  var kategoriBuku = Rxn<List<DataKategori>>();
+  var newBooks = RxList<DataBookNew>();
+  var popularBooks = RxList<DataPopularBook>();
+  var kategoriBuku = RxList<DataKategori>();
 
   @override
   void onInit() {
@@ -32,11 +32,14 @@ class HomeController extends GetxController with StateMixin {
         final ResponseKategori responseKategoriBuku = ResponseKategori.fromJson(responseKategori.data);
 
         if (responseBukuNew.data!.isEmpty && responseBukuPopular.data!.isEmpty) {
+          newBooks.clear();
+          popularBooks.clear();
+          kategoriBuku.clear();
           change(null, status: RxStatus.empty());
         } else {
-          newBooks(responseBukuNew.data!);
-          popularBooks(responseBukuPopular.data!);
-          kategoriBuku(responseKategoriBuku.data!);
+          newBooks.assignAll(responseBukuNew.data!);
+          popularBooks.assignAll(responseBukuPopular.data!);
+          kategoriBuku.assignAll(responseKategoriBuku.data!);
 
           change(null, status: RxStatus.success());
         }
@@ -56,10 +59,5 @@ class HomeController extends GetxController with StateMixin {
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
-  }
-
-  Future<void> refreshBooks() async {
-    // Panggil metode getData() untuk memuat ulang data buku
-    await getData();
   }
 }

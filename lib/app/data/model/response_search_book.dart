@@ -1,6 +1,6 @@
 /// Status : 200
 /// Message : "Berhasil menampilkan data pencarian buku"
-/// data : [{"KategoriBuku":"Novel Non Fiksi","Buku":[{"BukuID":1,"CoverBuku":"http://192.168.43.21:8000/storage/images/coverbook/Buya Hamka.png","Judul":"Buya Hamka","Penulis":"A Fuadi","Penerbit":"Gramedia Center","TahunTerbit":"2013","JumlahHalaman":"438","Rating":0,"Total_ulasan":0,"JumlahRating":0,"JumlahPeminjam":0}]}]
+/// data : [{"BukuID":1,"CoverBuku":"http://192.168.86.229:8000/storage/images/coverbook/Sang Pemimpi.png","Judul":"Sang Pemimpi","Penulis":"Andrea Hirata","Penerbit":"Naver Webtoon","TahunTerbit":"2013","JumlahHalaman":"438","Rating":5,"Total_ulasan":1,"JumlahRating":5,"JumlahPeminjam":0}]
 
 class ResponseSearchBook {
   ResponseSearchBook({
@@ -34,51 +34,20 @@ class ResponseSearchBook {
 
 }
 
-/// KategoriBuku : "Novel Non Fiksi"
-/// Buku : [{"BukuID":1,"CoverBuku":"http://192.168.43.21:8000/storage/images/coverbook/Buya Hamka.png","Judul":"Buya Hamka","Penulis":"A Fuadi","Penerbit":"Gramedia Center","TahunTerbit":"2013","JumlahHalaman":"438","Rating":0,"Total_ulasan":0,"JumlahRating":0,"JumlahPeminjam":0}]
+/// BukuID : 1
+/// CoverBuku : "http://192.168.86.229:8000/storage/images/coverbook/Sang Pemimpi.png"
+/// Judul : "Sang Pemimpi"
+/// Penulis : "Andrea Hirata"
+/// Penerbit : "Naver Webtoon"
+/// TahunTerbit : "2013"
+/// JumlahHalaman : "438"
+/// Rating : 5
+/// Total_ulasan : 1
+/// JumlahRating : 5
+/// JumlahPeminjam : 0
 
 class DataSearch {
   DataSearch({
-      this.kategoriBuku, 
-      this.buku,});
-
-  DataSearch.fromJson(dynamic json) {
-    kategoriBuku = json['KategoriBuku'];
-    if (json['Buku'] != null) {
-      buku = [];
-      json['Buku'].forEach((v) {
-        buku?.add(Buku.fromJson(v));
-      });
-    }
-  }
-  String? kategoriBuku;
-  List<Buku>? buku;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['KategoriBuku'] = kategoriBuku;
-    if (buku != null) {
-      map['Buku'] = buku?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
-
-}
-
-/// BukuID : 1
-/// CoverBuku : "http://192.168.43.21:8000/storage/images/coverbook/Buya Hamka.png"
-/// Judul : "Buya Hamka"
-/// Penulis : "A Fuadi"
-/// Penerbit : "Gramedia Center"
-/// TahunTerbit : "2013"
-/// JumlahHalaman : "438"
-/// Rating : 0
-/// Total_ulasan : 0
-/// JumlahRating : 0
-/// JumlahPeminjam : 0
-
-class Buku {
-  Buku({
       this.bukuID, 
       this.coverBuku, 
       this.judul, 
@@ -91,7 +60,7 @@ class Buku {
       this.jumlahRating, 
       this.jumlahPeminjam,});
 
-  Buku.fromJson(dynamic json) {
+  DataSearch.fromJson(dynamic json) {
     bukuID = json['BukuID'];
     coverBuku = json['CoverBuku'];
     judul = json['Judul'];
@@ -99,7 +68,7 @@ class Buku {
     penerbit = json['Penerbit'];
     tahunTerbit = json['TahunTerbit'];
     jumlahHalaman = json['JumlahHalaman'];
-    rating = json['Rating']?.toDouble();
+    rating = json['Rating'].toDouble();
     totalUlasan = json['Total_ulasan'];
     jumlahRating = json['JumlahRating'];
     jumlahPeminjam = json['JumlahPeminjam'];

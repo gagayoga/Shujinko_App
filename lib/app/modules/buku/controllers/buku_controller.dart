@@ -5,13 +5,12 @@ import 'package:shujinko_app/app/data/model/response_search_book.dart';
 
 import '../../../data/constant/endpoint.dart';
 import '../../../data/model/response_book.dart';
-import '../../../data/model/response_book.dart';
 import '../../../data/provider/api_provider.dart';
 
 class BukuController extends GetxController with StateMixin{
 
-  var dataBook = Rxn<List<DataBook>>();
-  var searchBook = Rxn<List<DataSearch>>();
+  var dataBook = RxList<DataBook>();
+  var searchBook = RxList<DataSearch>();
 
 
   final TextEditingController searchController = TextEditingController();
@@ -46,7 +45,7 @@ class BukuController extends GetxController with StateMixin{
         if (responseDataBook.data!.isEmpty) {
           change(null, status: RxStatus.empty());
         } else {
-          dataBook(responseDataBook.data!);
+          dataBook(responseDataBook.data);
           change(null, status: RxStatus.success());
         }
       } else {
@@ -68,28 +67,30 @@ class BukuController extends GetxController with StateMixin{
   }
 
   Future<void> getDataSearchBook(String keyword) async {
-    change(null, status: RxStatus.loading());
-
     try {
-      final responseSearchBook = await ApiProvider.instance()
-          .get('${Endpoint.searchBook}?keyword=$keyword');
+      change(null, status: RxStatus.loading()); // Ubah status menjadi loading
 
-      if (responseSearchBook.statusCode == 200) {
-        final ResponseSearchBook responseDataSearchBook =
-        ResponseSearchBook.fromJson(responseSearchBook.data);
+      final response = await ApiProvider.instance().get('${Endpoint.searchBook}?keyword=$keyword');
 
-        if (responseDataSearchBook.data!.isEmpty) {
+      if (response.statusCode == 200) {
+        final responseData = ResponseSearchBook.fromJson(response.data);
+
+        if (responseData.data!.isEmpty) {
+          searchBook.clear();
           change(null, status: RxStatus.empty());
         } else {
-          searchBook(responseDataSearchBook.data!);
+          searchBook.assignAll(responseData.data!);
           change(null, status: RxStatus.success());
         }
       } else {
+        // Tangani kasus jika status kode respons bukan 200
         change(null, status: RxStatus.error("Gagal Memanggil Data"));
       }
     } on DioError catch (e) {
+      // Tangani kesalahan jika terjadi kesalahan dengan Dio
       handleError(e);
     } catch (e) {
+      // Tangani kesalahan lainnya
       handleError(e);
     }
   }
@@ -99,7 +100,7 @@ class BukuController extends GetxController with StateMixin{
       if (e.response != null) {
         final responseData = e.response?.data;
         if (responseData != null) {
-          final errorMessage = responseData['message'] ?? "Unknown error";
+          final errorMessage = responseData['Message'] ?? "Unknown error";
           change(null, status: RxStatus.error(errorMessage));
         }
       } else {

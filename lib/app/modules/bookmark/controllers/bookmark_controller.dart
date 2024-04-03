@@ -8,18 +8,19 @@ import '../../../data/provider/api_provider.dart';
 import '../../../data/provider/storage_provider.dart';
 
 class BookmarkController extends GetxController with StateMixin{
-  var koleksiBook = Rxn<List<DataKoleksiBook>>();
-  var historyPeminjaman = Rxn<List<DataHistory>>();
+  var koleksiBook = RxList<DataKoleksiBook>();
+  var historyPeminjaman = RxList<DataHistory>();
   String idUser = StorageProvider.read(StorageKey.idUser);
 
   // Jumlah Data
-  int get jumlahKoleksiBook => koleksiBook.value?.length ?? 0;
-  int get jumlahHistoryPeminjaman => historyPeminjaman.value?.length ?? 0;
+  int get jumlahKoleksiBook => koleksiBook.length;
+  int get jumlahHistoryPeminjaman => historyPeminjaman.length;
 
   @override
   void onInit() {
     super.onInit();
-    getData();
+    getDataKoleksi();
+    getDataPeminjaman();
   }
 
   @override
@@ -32,24 +33,56 @@ class BookmarkController extends GetxController with StateMixin{
     super.onClose();
   }
 
-  Future<void> getData() async {
+  Future<void> getDataPeminjaman() async {
+    change(null, status: RxStatus.loading());
+
+    try {
+      final responseHistoryPeminjaman = await ApiProvider.instance().get(
+          '${Endpoint.historyPeminjaman}/$idUser');
+
+      if (responseHistoryPeminjaman.statusCode == 200) {
+        final ResponseHistoryPeminjaman responseHistory = ResponseHistoryPeminjaman.fromJson(responseHistoryPeminjaman.data);
+
+        if (responseHistory.data!.isEmpty) {
+          historyPeminjaman.clear();
+          change(null, status: RxStatus.empty());
+        } else {
+          historyPeminjaman.assignAll(responseHistory.data!);
+          change(null, status: RxStatus.success());
+        }
+      } else {
+        change(null, status: RxStatus.error("Gagal Memanggil Data"));
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final responseData = e.response?.data;
+        if (responseData != null) {
+          final errorMessage = responseData['Message'] ?? "Unknown error";
+          change(null, status: RxStatus.error(errorMessage));
+        }
+      } else {
+        change(null, status: RxStatus.error(e.message));
+      }
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
+    }
+  }
+
+  Future<void> getDataKoleksi() async {
     change(null, status: RxStatus.loading());
 
     try {
       final responseKoleksiBuku = await ApiProvider.instance().get(
           '${Endpoint.koleksiBuku}/$idUser');
-      final responseHistoryPeminjaman = await ApiProvider.instance().get(
-          '${Endpoint.historyPeminjaman}/$idUser');
 
-      if (responseKoleksiBuku.statusCode == 200 && responseHistoryPeminjaman.statusCode == 200) {
+      if (responseKoleksiBuku.statusCode == 200) {
         final ResponseKoleksiBook responseKoleksi = ResponseKoleksiBook.fromJson(responseKoleksiBuku.data);
-        final ResponseHistoryPeminjaman responseHistory = ResponseHistoryPeminjaman.fromJson(responseHistoryPeminjaman.data);
 
-        if (responseKoleksi.data!.isEmpty || responseHistory.data!.isEmpty) {
+        if (responseKoleksi.data!.isEmpty) {
+          koleksiBook.clear();
           change(null, status: RxStatus.empty());
         } else {
-          koleksiBook(responseKoleksi.data!);
-          historyPeminjaman(responseHistory.data!);
+          koleksiBook.assignAll(responseKoleksi.data!);
           change(null, status: RxStatus.success());
         }
       } else {

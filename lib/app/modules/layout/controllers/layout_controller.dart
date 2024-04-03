@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:shujinko_app/app/modules/home/controllers/home_controller.dart';
 
 class LayoutController extends GetxController {
   var tabIndex = 0;

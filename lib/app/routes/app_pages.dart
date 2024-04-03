@@ -51,7 +51,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LAYOUT,
-      page: () => const LayoutView(),
+      page: () => LayoutView(),
       binding: LayoutBinding(),
     ),
     GetPage(
