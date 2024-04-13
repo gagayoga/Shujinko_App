@@ -8,7 +8,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:shujinko_app/app/routes/app_pages.dart';
 
 import '../../../components/custom_search_textfield.dart';
-import '../../../data/model/response_book.dart';
+import '../../../data/model/buku/response_book.dart';
 import '../controllers/buku_controller.dart';
 
 class BukuView extends GetView<BukuController> {
@@ -90,20 +90,25 @@ class BukuView extends GetView<BukuController> {
   }
 
   Widget kontenSearchBuku() {
-    if (controller.searchBook.isEmpty) {
-      return kontenDataKosong();
-    } else {
-      return SizedBox(
-        height: 250,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
+    return Obx((){
+      if (controller.searchBook.isEmpty) {
+        return kontenDataKosong();
+      } else {
+        return GridView.builder(
+          scrollDirection: Axis.vertical,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+            childAspectRatio: 6 / 8,
+          ),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: controller.searchBook.length,
           itemBuilder: (context, index) {
             var bukuList = controller.searchBook[index];
             return SizedBox(
-              height: 250,
+              height: 260,
               child: Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: InkWell(
@@ -117,15 +122,14 @@ class BukuView extends GetView<BukuController> {
                     );
                   },
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Stack(
                         children: [
                           SizedBox(
-                            width: 140,
                             height: 200,
                             child: AspectRatio(
-                              aspectRatio: 4 / 5,
+                              aspectRatio: 6 / 7,
                               child: Image.network(
                                 bukuList.coverBuku.toString(),
                                 fit: BoxFit.cover,
@@ -175,15 +179,15 @@ class BukuView extends GetView<BukuController> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      FittedBox(
+                      Expanded(
                         child: Text(
                           bukuList.judul.toString(),
                           style: GoogleFonts.inriaSans(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
-                            fontSize: 14.0,
+                            fontSize: 16.0,
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.start,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -194,9 +198,9 @@ class BukuView extends GetView<BukuController> {
               ),
             );
           },
-        ),
-      );
-    }
+        );
+      }
+    });
   }
 
   Widget kontenDataKosong(){
@@ -309,7 +313,7 @@ class BukuView extends GetView<BukuController> {
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: SizedBox(
-                height: 220, // Sesuaikan tinggi container sesuai kebutuhan Anda
+                height: 250,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: bukuList.length,
@@ -327,7 +331,7 @@ class BukuView extends GetView<BukuController> {
                           );
                         },
                         child: SizedBox(
-                          width: 135,
+                          width: 145,
                           height: 220,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,8 +339,8 @@ class BukuView extends GetView<BukuController> {
                               Stack(
                                 children: [
                                   SizedBox(
-                                    width: 135,
-                                    height: 175,
+                                    width: 145,
+                                    height: 195,
                                     child: AspectRatio(
                                       aspectRatio: 4 / 5,
                                       child: Image.network(
@@ -395,7 +399,7 @@ class BukuView extends GetView<BukuController> {
                                       color: Colors.white,
                                       fontSize: 16.0
                                   ),
-                                  textAlign: TextAlign.center,
+                                  textAlign: TextAlign.start,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),

@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextFieldProfile extends StatelessWidget {
   final controller;
   final String hinText;
+  final String? initial;
   final bool obsureText;
   final Widget? preficIcon;
   final Widget? surficeIcon;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
 
-  const CustomTextField({
+  const CustomTextFieldProfile({
     super.key,
     required this.controller,
     required this.hinText,
     required this.obsureText,
     this.preficIcon,
     this.surficeIcon,
+    this.initial,
     this.validator,
     this.onChanged
   });
@@ -31,6 +33,7 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
+        initialValue: initial,
         style: GoogleFonts.inriaSans(
           fontSize: 20,
           fontWeight: FontWeight.w800,
@@ -66,7 +69,7 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(20.20),
           ),
           contentPadding:
-              const EdgeInsets.symmetric(vertical: 13.0, horizontal: 20.0),
+          const EdgeInsets.symmetric(vertical: 13.0, horizontal: 20.0),
           hintText: hinText,
           errorStyle: GoogleFonts.inriaSans(
             fontSize: 15,

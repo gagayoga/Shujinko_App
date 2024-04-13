@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:shujinko_app/app/data/model/response_search_book.dart';
+import 'package:shujinko_app/app/data/model/buku/response_search_book.dart';
 
 import '../../../data/constant/endpoint.dart';
-import '../../../data/model/response_book.dart';
+import '../../../data/model/buku/response_book.dart';
 import '../../../data/provider/api_provider.dart';
 
 class BukuController extends GetxController with StateMixin{
@@ -86,17 +86,7 @@ class BukuController extends GetxController with StateMixin{
         // Tangani kasus jika status kode respons bukan 200
         change(null, status: RxStatus.error("Gagal Memanggil Data"));
       }
-    } on DioError catch (e) {
-      // Tangani kesalahan jika terjadi kesalahan dengan Dio
-      handleError(e);
-    } catch (e) {
-      // Tangani kesalahan lainnya
-      handleError(e);
-    }
-  }
-
-  void handleError(dynamic e) {
-    if (e is DioError) {
+    } on DioException catch (e) {
       if (e.response != null) {
         final responseData = e.response?.data;
         if (responseData != null) {
@@ -106,8 +96,9 @@ class BukuController extends GetxController with StateMixin{
       } else {
         change(null, status: RxStatus.error(e.message));
       }
-    } else {
+    } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
   }
+
 }

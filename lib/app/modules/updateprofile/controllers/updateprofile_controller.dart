@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,13 +7,17 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../data/constant/endpoint.dart';
 import '../../../data/model/user/response_data_profile.dart';
 import '../../../data/provider/api_provider.dart';
-import '../../../data/provider/storage_provider.dart';
-import '../../../routes/app_pages.dart';
 
-class ProfileController extends GetxController with StateMixin{
+class UpdateprofileController extends GetxController with StateMixin{
 
   var detailProfile = Rxn<DataUser>();
   final loading = false.obs;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+  final TextEditingController teleponController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController namalengkapController = TextEditingController();
 
   @override
   void onInit() {
@@ -64,35 +68,42 @@ class ProfileController extends GetxController with StateMixin{
     }
   }
 
-  logout() async {
+  updateProfilePost() async {
     loading(true);
     try {
       FocusScope.of(Get.context!).unfocus();
-
-      var response = await ApiProvider.instance().post(
-          Endpoint.logout
-      );
-
-      if (response.statusCode == 200) {
-
-        StorageProvider.clearAll();
-        _showMyDialog(
-                (){
-              Get.offAllNamed(Routes.LOGIN);
-            },
-            "Pemberitahuan",
-            "Logout Berhasil, silakan login kembali",
-            "Ok"
+      formKey.currentState?.save();
+      if (formKey.currentState!.validate()) {
+        var response = await ApiProvider.instance().patch(Endpoint.updateProfile,
+            data:
+            {
+              "Username" : usernameController.text.toString(),
+              "Bio" : bioController.text.toString(),
+              "NamaLengkap" : namalengkapController.text.toString(),
+              "Email" : emailController.text.toString(),
+              "NoTelepon" : teleponController.text.toString(),
+            }
         );
-      } else {
-        _showMyDialog(
-                (){
-              Navigator.pop(Get.context!, 'OK');
-            },
-            "Pemberitahuan",
-            "Logout gagal, silakan coba lagi",
-            "Ok"
-        );
+        if (response.statusCode == 201) {
+          String username = usernameController.text.toString();
+          _showMyDialog(
+                  (){
+                Get.back();
+                Get.reloadAll();
+              },
+              "Update Profile Berhasil",
+              "Update Profile Akun $username Berhasil",
+              "Lanjut");
+        } else {
+          _showMyDialog(
+                  (){
+                Navigator.pop(Get.context!, 'OK');
+              },
+              "Pemberitahuan",
+              "Update Profile Gagal",
+              "Ok"
+          );
+        }
       }
       loading(false);
     } on DioException catch (e) {
@@ -104,7 +115,7 @@ class ProfileController extends GetxController with StateMixin{
                 Navigator.pop(Get.context!, 'OK');
               },
               "Pemberitahuan",
-              "${e.response?.data['message']}",
+              "${e.response?.data?['Message']}",
               "Ok"
           );
         }

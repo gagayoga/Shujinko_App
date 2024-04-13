@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
@@ -9,7 +8,6 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../data/provider/storage_provider.dart';
 import '../../../routes/app_pages.dart';
-import '../../layout/controllers/layout_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -22,19 +20,11 @@ class HomeView extends GetView<HomeController> {
     double barHeight = MediaQuery.of(context).padding.top;
     double bodyHeight = height - barHeight;
 
-    // const Color colorText = Color(0xFFEA1818);
-    const Color background = Color(0xFF03010E);
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: background,
-      statusBarIconBrightness: Brightness.light,// Change this color as needed
-    ));
-
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async{
-            await controller.getData();
+            controller.getData();
           },
           child: Container(
             width: width,
@@ -279,7 +269,7 @@ class HomeView extends GetView<HomeController> {
   // Konten Buku Popular
   Widget kontenBukuPopular(){
     return SizedBox(
-      height: 205,
+      height: 235,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -301,7 +291,7 @@ class HomeView extends GetView<HomeController> {
                     );
                   },
                   child: SizedBox(
-                    width: 135,
+                    width: 145,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: Column(
@@ -311,10 +301,10 @@ class HomeView extends GetView<HomeController> {
                           Stack(
                             children: [
                               SizedBox(
-                                width: 135,
-                                height: 175,
+                                width: 145,
+                                height: 185,
                                 child: AspectRatio(
-                                  aspectRatio: 4 / 5,
+                                  aspectRatio: 4 / 6,
                                   child: Image.network(
                                     buku.coverBuku.toString(),
                                     fit: BoxFit.cover,
@@ -381,7 +371,7 @@ class HomeView extends GetView<HomeController> {
                                   fontSize: 14.0
                               ),
                               maxLines: 2,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -397,8 +387,8 @@ class HomeView extends GetView<HomeController> {
               onTap: () {
               },
               child: Container(
-                width: 120,
-                height: 205,
+                width: 145,
+                height: 235,
                 color: const Color(0XFF1B1B1D),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -496,7 +486,14 @@ class HomeView extends GetView<HomeController> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed(Routes.BOOKBYKATEGORI,
+                    parameters: {
+                      'idKategori': (buku.kategoriID ?? 0).toString(),
+                      'namaKategori': (buku.namaKategori!).toString()
+                    },
+                  );
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: const Color(0XFF1B1B1D),
                   shape: RoundedRectangleBorder(
@@ -565,65 +562,62 @@ class HomeView extends GetView<HomeController> {
 
   // Konten Buku Terbaru
   Widget kontenBukuTerbaru() {
-    return SizedBox(
-      height: 250,
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 10.0,
-          childAspectRatio: 3 / 6,
-        ),
-        itemCount: controller.newBooks.length,
-        itemBuilder: (context, index) {
-          var buku = controller.newBooks[index];
-          return InkWell(
-            onTap: () {
-              Get.toNamed(Routes.DETAILBUKU,
-                parameters: {
-                  'id': (buku.bukuID ?? 0).toString(),
-                  'judul': (buku.judulBuku!).toString()
-                },
-              );
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 10,
-                  child: SizedBox(
-                    height: 175, // Tetapkan tinggi container
-                    child: Image.network(
-                      buku.coverBuku.toString(),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                    child: Text(
-                      buku.judulBuku.toString(),
-                      style: GoogleFonts.inriaSans(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+        childAspectRatio: 3 / 6,
       ),
+      itemCount: controller.newBooks.length,
+      itemBuilder: (context, index) {
+        var buku = controller.newBooks[index];
+        return InkWell(
+          onTap: () {
+            Get.toNamed(Routes.DETAILBUKU,
+              parameters: {
+                'id': (buku.bukuID ?? 0).toString(),
+                'judul': (buku.judulBuku!).toString()
+              },
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 10,
+                child: SizedBox(
+                  height: 175, // Tetapkan tinggi container
+                  child: Image.network(
+                    buku.coverBuku.toString(),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: Text(
+                    buku.judulBuku.toString(),
+                    style: GoogleFonts.inriaSans(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -702,7 +696,7 @@ class HomeView extends GetView<HomeController> {
                   children: [
                     Text(
                       'Temukan Ribuan Buku',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.inriaSans(
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
                           fontSize: 26.0
@@ -710,7 +704,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                     Text(
                       'Dengan sekali klik',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.inriaSans(
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
                           fontSize: 14.0
@@ -722,7 +716,7 @@ class HomeView extends GetView<HomeController> {
       
               InkWell(
                 onTap: () {
-                  Get.find<LayoutController>().changeTabIndex(1);
+                  // Get.find<LayoutController>().changeTabIndex(1);
                 },
                 child: Container(
                   width: 35,

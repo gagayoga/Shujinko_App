@@ -4,12 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomTabBar extends StatelessWidget {
   final String tittle;
   final int count;
+  final Widget widgetText;
   final Function() onTap;
 
   const CustomTabBar({
     super.key,
     required this.tittle,
     required this.count,
+    required this.widgetText,
     required this.onTap,
   });
 
@@ -27,7 +29,7 @@ class CustomTabBar extends StatelessWidget {
               style: GoogleFonts.inriaSans(
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
-                fontSize: 18
+                fontSize: 16
               ),
             ),
           ),
@@ -41,14 +43,9 @@ class CustomTabBar extends StatelessWidget {
               shape: BoxShape.circle
             ),
             child: Center(
-              child: Text(
-                count > 20 ? "20++" : count.toString(),
-                style: GoogleFonts.inriaSans(
-                  color: const Color(0xFFEA1818),
-                ),
+              child: widgetText,
               ),
-            ),
-          ) : const SizedBox(width: 0, height: 0,),
+            ) : const SizedBox(width: 0, height: 0,),
         ],
       ),
     );

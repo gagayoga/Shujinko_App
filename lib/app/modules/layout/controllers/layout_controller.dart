@@ -1,6 +1,11 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class LayoutController extends GetxController {
+
+  GlobalKey<CurvedNavigationBarState> bottomKey = GlobalKey();
+
   var tabIndex = 0;
 
   void changeTabIndex(int index) {
@@ -8,7 +13,7 @@ class LayoutController extends GetxController {
     update();
   }
 
-  final count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -23,6 +28,4 @@ class LayoutController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

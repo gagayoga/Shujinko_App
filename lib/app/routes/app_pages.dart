@@ -1,7 +1,11 @@
 import 'package:get/get.dart';
 
+import '../modules/bookbykategori/bindings/bookbykategori_binding.dart';
+import '../modules/bookbykategori/views/bookbykategori_view.dart';
 import '../modules/bookmark/bindings/bookmark_binding.dart';
 import '../modules/bookmark/views/bookmark_view.dart';
+import '../modules/buktipeminjaman/bindings/buktipeminjaman_binding.dart';
+import '../modules/buktipeminjaman/views/buktipeminjaman_view.dart';
 import '../modules/buku/bindings/buku_binding.dart';
 import '../modules/buku/views/buku_view.dart';
 import '../modules/detailbuku/bindings/detailbuku_binding.dart';
@@ -18,6 +22,8 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
+import '../modules/updateprofile/bindings/updateprofile_binding.dart';
+import '../modules/updateprofile/views/updateprofile_view.dart';
 
 part 'app_routes.dart';
 
@@ -51,7 +57,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LAYOUT,
-      page: () => LayoutView(),
+      page: () => const LayoutView(),
       binding: LayoutBinding(),
     ),
     GetPage(
@@ -73,6 +79,21 @@ class AppPages {
       name: _Paths.DETAILBUKU,
       page: () => const DetailbukuView(),
       binding: DetailbukuBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKBYKATEGORI,
+      page: () => const BookbykategoriView(),
+      binding: BookbykategoriBinding(),
+    ),
+    GetPage(
+      name: _Paths.BUKTIPEMINJAMAN,
+      page: () => const BuktipeminjamanView(),
+      binding: BuktipeminjamanBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATEPROFILE,
+      page: () => const UpdateprofileView(),
+      binding: UpdateprofileBinding(),
     ),
   ];
 }

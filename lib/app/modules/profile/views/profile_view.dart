@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shujinko_app/app/data/provider/storage_provider.dart';
+import 'package:shujinko_app/app/routes/app_pages.dart';
 
 import '../controllers/profile_controller.dart';
 
@@ -15,9 +16,6 @@ class ProfileView extends GetView<ProfileController> {
     double height = MediaQuery.of(context).size.height;
     double barHeight = MediaQuery.of(context).padding.top;
     double bodyHeight = height - barHeight;
-
-    var usernameUser = StorageProvider.read(StorageKey.username);
-    var emailUser = StorageProvider.read(StorageKey.email);
 
     return Scaffold(
       body: SafeArea(
@@ -46,67 +44,107 @@ class ProfileView extends GetView<ProfileController> {
                       height: height * 0.080,
                     ),
 
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: SizedBox(
-                        width: 150,
-                        height: 150,
-                        child: Image.asset(
-                          'lib/assets/images/profile.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(
-                      height: height * 0.025,
-                    ),
-
-                    SizedBox(
-                      width: 120,
-                      height: 45,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          controller.logout();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD9D9D9).withOpacity(0.20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: FittedBox(
-                          child: Text(
-                            "Edit Profile",
-                            style: GoogleFonts.inriaSans(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: SizedBox(
+                            width: 150,
+                            height: 150,
+                            child: Image.asset(
+                              'lib/assets/images/profile.png',
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
-                      ),
+
+                        Positioned(
+                          right: 3,
+                          bottom: 3,
+                          child: InkWell(
+                            onTap: () async {
+                              await controller.getDataUser();
+                            },
+                            child: Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: Colors.white
+                              ),
+                              child: const Icon(
+                                Icons.refresh,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
+
+                    SizedBox(
+                      height: height * 0.010,
+                    ),
+
+                    Obx(() =>
+                        Text(
+                          'Bio : ${controller.detailProfile.value!.bio.toString()}',
+                          style: GoogleFonts.inriaSans(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white
+                          ),
+                        )
+                    ),
+
+                    SizedBox(
+                      height: height * 0.015,
+                    ),
+
+                    Obx(() {
+                      var user = controller.detailProfile.value;
+                      return SizedBox(
+                        width: 120,
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed(
+                                Routes.UPDATEPROFILE,
+                              parameters: {
+                                  'nama' : user!.namaLengkap.toString(),
+                                  'username' : user.username.toString(),
+                                  'email' : user.email.toString(),
+                                  'bio' : user.bio.toString(),
+                                  'telepon' : user.telepon.toString(),
+                              }
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFD9D9D9).withOpacity(0.20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: FittedBox(
+                            child: Text(
+                              "Edit Profile",
+                              style: GoogleFonts.inriaSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
 
                     SizedBox(
                       height: height * 0.025,
                     ),
 
-                    Column(
-                      children: [
-                        kontenProfileUser(
-                            'Username : $usernameUser'
-                        ),
+                    kontenDataProfile(),
 
-                        kontenProfileUser(
-                            'Email : $emailUser'
-                        ),
-
-                        kontenProfileUser(
-                            'Bio : Bismillah 2024 di jepang'
-                        ),
-                      ],
-                    ),
                   ],
                 ),
 
@@ -174,5 +212,50 @@ class ProfileView extends GetView<ProfileController> {
         ],
       ),
     );
+  }
+
+  Widget kontenDataProfile(){
+    return Obx(() {
+      if(controller.detailProfile.value == null){
+        return const Padding(
+          padding: EdgeInsets.symmetric(vertical: 50),
+          child: Center(
+            child: CircularProgressIndicator(
+              color: Colors.black,
+              backgroundColor: Colors.grey,
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFEA1818)),
+            ),
+          ),
+        );
+      }else{
+        var dataUser = controller.detailProfile.value;
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            kontenProfileUser(
+                'Nama Lengkap : ${dataUser?.namaLengkap.toString()}'
+            ),
+
+            kontenProfileUser(
+                'Username : ${dataUser?.username.toString()}'
+            ),
+
+            kontenProfileUser(
+                'Email : ${dataUser?.email.toString()}'
+            ),
+
+            kontenProfileUser(
+                'Bio : ${dataUser?.bio.toString()}'
+            ),
+
+            kontenProfileUser(
+                'No Telepon : ${dataUser?.telepon.toString()}'
+            ),
+          ],
+        );
+      }
+    });
   }
 }
