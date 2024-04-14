@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shujinko_app/app/modules/layout/controllers/layout_controller.dart';
 
 import '../../../data/provider/storage_provider.dart';
 import '../../../routes/app_pages.dart';
@@ -278,7 +279,7 @@ class HomeView extends GetView<HomeController> {
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: controller.popularBooks.length,
+              itemCount: controller.popularBooks.length > 10 ? 10 : controller.popularBooks.length,
               itemBuilder: (context, index) {
                 var buku = controller.popularBooks[index];
                 return InkWell(
@@ -385,6 +386,7 @@ class HomeView extends GetView<HomeController> {
 
             InkWell(
               onTap: () {
+                Get.toNamed(Routes.BOOKPOPULAR);
               },
               child: Container(
                 width: 145,
@@ -671,68 +673,76 @@ class HomeView extends GetView<HomeController> {
     double width = MediaQuery.of(Get.context!).size.width;
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: width,
-        height: 115,
-        decoration: const BoxDecoration(
-          image:  DecorationImage(
-              image: AssetImage(
-                'lib/assets/images/konten_home.png',
-              ),
-              fit: BoxFit.cover
+      child: InkWell(
+        onTap: (){
+          LayoutController layoutController = Get.find<LayoutController>();
+          layoutController.changeTabIndex(1);
+
+          Get.put<LayoutController>(layoutController);
+        },
+        child: Container(
+          width: width,
+          height: 115,
+          decoration: const BoxDecoration(
+            image:  DecorationImage(
+                image: AssetImage(
+                  'lib/assets/images/konten_home.png',
+                ),
+                fit: BoxFit.cover
+            ),
           ),
-        ),
-      
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Temukan Ribuan Buku',
-                      style: GoogleFonts.inriaSans(
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          fontSize: 26.0
+
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Temukan Ribuan Buku',
+                        style: GoogleFonts.inriaSans(
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            fontSize: 26.0
+                        ),
                       ),
+                      Text(
+                        'Dengan sekali klik',
+                        style: GoogleFonts.inriaSans(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontSize: 14.0
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+
+                InkWell(
+                  onTap: () {
+                    // Get.find<LayoutController>().changeTabIndex(1);
+                  },
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25),
                     ),
-                    Text(
-                      'Dengan sekali klik',
-                      style: GoogleFonts.inriaSans(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          fontSize: 14.0
-                      ),
-                    )
-                  ],
-                ),
-              ),
-      
-              InkWell(
-                onTap: () {
-                  // Get.find<LayoutController>().changeTabIndex(1);
-                },
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25),
+                    child: const Icon(
+                      Icons.navigate_next_rounded,
+                      color: Colors.black,
+                      size: 35,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.navigate_next_rounded,
-                    color: Colors.black,
-                    size: 35,
-                  ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

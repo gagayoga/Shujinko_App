@@ -12,7 +12,7 @@ class Endpoint {
   static const String getDataProfile = "${baseUrlApi}get-profile";
 
   // Buku
-  static const String buku = "${baseUrlApi}buku";
+  static const String buku = baseUrlApi;
   static const String bukuNew = "${baseUrlApi}buku/new";
   static const String kategoriBuku = "${baseUrlApi}kategori";
   static const String detailBuku = "${baseUrlApi}buku/detail";

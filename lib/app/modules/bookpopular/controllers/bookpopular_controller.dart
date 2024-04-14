@@ -1,22 +1,18 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:shujinko_app/app/data/model/buku/response_all_book.dart';
 
 import '../../../data/constant/endpoint.dart';
+import '../../../data/model/buku/response_popular_book.dart';
 import '../../../data/provider/api_provider.dart';
 
-class BukuController extends GetxController with StateMixin{
+class BookpopularController extends GetxController with StateMixin {
 
-  var dataBook = RxList<DataBook>();
-
-
-  final TextEditingController searchController = TextEditingController();
+  var popularBooks = RxList<DataPopularBook>();
 
   @override
   void onInit() {
     super.onInit();
-    getData();
+    getDataPopularBook();
   }
 
   @override
@@ -29,28 +25,22 @@ class BukuController extends GetxController with StateMixin{
     super.onClose();
   }
 
-  Future<void> getData() async {
-    dataBook.clear();
+  Future<void> getDataPopularBook() async {
+    popularBooks.clear();
     change(null, status: RxStatus.loading());
 
     try {
+      final responsePopular = await ApiProvider.instance().get(Endpoint.bukuPopular);
 
-      final keyword = searchController.text.toString();
-      final responseSemuaBook;
+      if (responsePopular.statusCode == 200) {
+        final ResponsePopularBook responseBukuPopular = ResponsePopularBook.fromJson(responsePopular.data);
 
-      if(keyword == ''){
-        responseSemuaBook = await ApiProvider.instance().get('${Endpoint.buku}all/buku/null');
-      }else{
-        responseSemuaBook = await ApiProvider.instance().get('${Endpoint.buku}all/buku/$keyword');
-      }
-
-      if (responseSemuaBook.statusCode == 200) {
-        final ResponseAllBook responseDataBook = ResponseAllBook.fromJson(responseSemuaBook.data);
-
-        if (responseDataBook.data!.isEmpty) {
+        if (responseBukuPopular.data!.isEmpty) {
+          popularBooks.clear();
           change(null, status: RxStatus.empty());
         } else {
-          dataBook(responseDataBook.data);
+          popularBooks.assignAll(responseBukuPopular.data!);
+
           change(null, status: RxStatus.success());
         }
       } else {

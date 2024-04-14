@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:shujinko_app/app/modules/aboutpage/views/aboutpage_view.dart';
 import '../../bookmark/views/bookmark_view.dart';
 import '../../buku/views/buku_view.dart';
 import '../../home/views/home_view.dart';
@@ -24,6 +25,14 @@ class LayoutView extends StatelessWidget {
       statusBarIconBrightness: Brightness.light,// Change this color as needed
     ));
 
+    List<Icon> iconList = const [
+      Icon(Icons.house_rounded, size: 30, color: Colors.white),
+      Icon(Icons.explore, size: 30, color: Colors.white),
+      Icon(Icons.history, size: 30, color: Colors.white),
+      Icon(Icons.person_rounded, size: 30, color: Colors.white),
+      Icon(Icons.info_rounded, size: 30, color: Colors.white),
+    ];
+
     return GetBuilder<LayoutController>(
         builder: (controller) {
           return Scaffold(
@@ -35,6 +44,7 @@ class LayoutView extends StatelessWidget {
                      BukuView(),
                      BookmarkView(),
                      ProfileView(),
+                     AboutpageView(),
                   ],
                 )
             ),
@@ -42,18 +52,17 @@ class LayoutView extends StatelessWidget {
               key: controller.bottomKey,
               index: 0,
               height: 68.0,
-              items: const[
-                Icon(Icons.house_rounded, size: 30, color: Colors.white),
-                Icon(Icons.explore, size: 30, color: Colors.white),
-                Icon(Icons.history, size: 30, color: Colors.white),
-                Icon(Icons.person_rounded, size: 30, color: Colors.white),
-                Icon(Icons.person_rounded, size: 30, color: Colors.white),
-                // Icon(Icons.person_rounded, size: 30, color: Colors.white,),
+              items: [
+                iconList[0], // Icon 1
+                iconList[1], // Icon 2
+                iconList[2], // Icon 3
+                iconList[3], // Icon 4
+                iconList[4], // Icon 5
               ],
               color: background,
               buttonBackgroundColor: colorSelect,
               backgroundColor: colorBlack,
-              animationCurve: Curves.easeInOut,
+              animationCurve: Curves.decelerate,
               animationDuration: const Duration(milliseconds: 600),
               onTap:  (index) => controller.changeTabIndex(index),
               letIndexChange: (index) => true,
@@ -61,4 +70,5 @@ class LayoutView extends StatelessWidget {
           );
         });
   }
+
 }

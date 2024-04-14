@@ -23,6 +23,7 @@ class DetailbukuView extends GetView<DetailbukuController> {
         appBar: AppBar(
           backgroundColor: background,
           toolbarHeight: 55,
+          titleSpacing: -5,
           title: Text(
             'Detail Buku',
             style: GoogleFonts.inriaSans(

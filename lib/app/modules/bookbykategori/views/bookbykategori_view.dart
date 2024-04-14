@@ -23,6 +23,7 @@ class BookbykategoriView extends GetView<BookbykategoriController> {
       appBar: AppBar(
         backgroundColor: background,
         toolbarHeight: 55,
+        titleSpacing: -5,
         title: Text(
           'Buku Berdasarkan $namaKategori',
           style: GoogleFonts.inriaSans(
@@ -61,16 +62,7 @@ class BookbykategoriView extends GetView<BookbykategoriController> {
   Widget kontenDataBook() {
     return Obx((){
       if (controller.dataBookByKategori.isEmpty) {
-        return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Center(
-            child: CircularProgressIndicator(
-              color: Colors.black,
-              backgroundColor: Colors.grey,
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFEA1818)),
-            ),
-          ),
-        );
+        return kontenDataKosong();
       } else {
         return GridView.builder(
           shrinkWrap: true,
@@ -141,27 +133,24 @@ class BookbykategoriView extends GetView<BookbykategoriController> {
     String namaBuku = Get.parameters['namaKategori'].toString();
 
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Container(
-          height: 50,
-          decoration: BoxDecoration(
-              color: background,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: borderColor,
-                width: 1.3,
-              )
-          ),
-          child: Center(
-            child: Text(
-              'Buku $namaBuku tidak ditemukan',
-              style: GoogleFonts.inriaSans(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.center,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+            color: background,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: borderColor,
+              width: 1.3,
+            )
+        ),
+        child: Center(
+          child: Text(
+            'Buku $namaBuku tidak ditemukan',
+            style: GoogleFonts.inriaSans(
+              color: Colors.white,
+              fontSize: 16,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),

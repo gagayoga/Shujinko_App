@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
 
+import '../modules/aboutpage/bindings/aboutpage_binding.dart';
+import '../modules/aboutpage/views/aboutpage_view.dart';
 import '../modules/bookbykategori/bindings/bookbykategori_binding.dart';
 import '../modules/bookbykategori/views/bookbykategori_view.dart';
 import '../modules/bookmark/bindings/bookmark_binding.dart';
 import '../modules/bookmark/views/bookmark_view.dart';
+import '../modules/bookpopular/bindings/bookpopular_binding.dart';
+import '../modules/bookpopular/views/bookpopular_view.dart';
 import '../modules/buktipeminjaman/bindings/buktipeminjaman_binding.dart';
 import '../modules/buktipeminjaman/views/buktipeminjaman_view.dart';
 import '../modules/buku/bindings/buku_binding.dart';
@@ -94,6 +98,16 @@ class AppPages {
       name: _Paths.UPDATEPROFILE,
       page: () => const UpdateprofileView(),
       binding: UpdateprofileBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKPOPULAR,
+      page: () => const BookpopularView(),
+      binding: BookpopularBinding(),
+    ),
+    GetPage(
+      name: _Paths.ABOUTPAGE,
+      page: () => const AboutpageView(),
+      binding: AboutpageBinding(),
     ),
   ];
 }

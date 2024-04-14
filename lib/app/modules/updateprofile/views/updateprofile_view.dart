@@ -26,6 +26,7 @@ class UpdateprofileView extends GetView<UpdateprofileController> {
         appBar: AppBar(
           backgroundColor: background,
           toolbarHeight: 55,
+          titleSpacing: -5,
           title: Text(
             'Perbarui Informasi Akun Anda',
             style: GoogleFonts.inriaSans(

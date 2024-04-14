@@ -32,6 +32,7 @@ class ProfileController extends GetxController with StateMixin{
   }
 
   Future<void> getDataUser() async {
+    detailProfile.value = null;
     change(null, status: RxStatus.loading());
 
     try {

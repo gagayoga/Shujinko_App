@@ -48,6 +48,11 @@ class UpdateprofileController extends GetxController with StateMixin{
           change(null, status: RxStatus.empty());
         } else {
           detailProfile(responseBuku.data);
+          emailController.text = detailProfile.value!.email.toString();
+          bioController.text = detailProfile.value!.bio.toString();
+          teleponController.text = detailProfile.value!.telepon.toString();
+          usernameController.text = detailProfile.value!.username.toString();
+          namalengkapController.text = detailProfile.value!.namaLengkap.toString();
           change(null, status: RxStatus.success());
         }
       } else {
