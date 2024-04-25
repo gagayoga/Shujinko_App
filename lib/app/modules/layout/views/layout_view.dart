@@ -30,7 +30,6 @@ class LayoutView extends StatelessWidget {
       Icon(Icons.explore, size: 30, color: Colors.white),
       Icon(Icons.history, size: 30, color: Colors.white),
       Icon(Icons.person_rounded, size: 30, color: Colors.white),
-      Icon(Icons.info_rounded, size: 30, color: Colors.white),
     ];
 
     return GetBuilder<LayoutController>(
@@ -44,7 +43,7 @@ class LayoutView extends StatelessWidget {
                      BukuView(),
                      BookmarkView(),
                      ProfileView(),
-                     AboutpageView(),
+
                   ],
                 )
             ),
@@ -57,7 +56,6 @@ class LayoutView extends StatelessWidget {
                 iconList[1], // Icon 2
                 iconList[2], // Icon 3
                 iconList[3], // Icon 4
-                iconList[4], // Icon 5
               ],
               color: background,
               buttonBackgroundColor: colorSelect,
