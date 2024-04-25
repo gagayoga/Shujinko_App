@@ -2,7 +2,7 @@ class Endpoint {
   static const String baseUrlApi =
       // "http://192.168.4.134:8000/api/users/";
       // "http://192.168.86.229:8000/api/users/";
-      "http://192.168.43.21:8000/api/users/";
+      "http://192.168.92.229:8000/api/users/";
 
   // Authenticated
   static const String register = "${baseUrlApi}registrasi";

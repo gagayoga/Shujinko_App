@@ -93,8 +93,7 @@ class UpdateprofileController extends GetxController with StateMixin{
           String username = usernameController.text.toString();
           _showMyDialog(
                   (){
-                Get.back();
-                Get.reloadAll();
+                    Navigator.pop(Get.context!, 'OK');
               },
               "Update Profile Berhasil",
               "Update Profile Akun $username Berhasil",
