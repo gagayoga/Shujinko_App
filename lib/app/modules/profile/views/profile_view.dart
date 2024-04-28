@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,12 @@ class ProfileView extends GetView<ProfileController> {
     double height = MediaQuery.of(context).size.height;
     double barHeight = MediaQuery.of(context).padding.top;
     double bodyHeight = height - barHeight;
+
+    const Color background = Color(0xFF03010E);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: background,
+      statusBarIconBrightness: Brightness.light, // Change this color as needed
+    ));
 
     return Scaffold(
       body: SafeArea(
@@ -132,38 +139,76 @@ class ProfileView extends GetView<ProfileController> {
                       color: Colors.white),
                 ),
                 SizedBox(
-                  height: height * 0.015,
-                ),
-                SizedBox(
-                  width: 120,
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.toNamed(
-                        Routes.UPDATEPROFILE,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color(0xFFD9D9D9).withOpacity(0.20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    child: FittedBox(
-                      child: Text(
-                        "Edit Profile",
-                        style: GoogleFonts.inriaSans(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
                   height: height * 0.025,
                 ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed(
+                              Routes.UPDATEPROFILE,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFD9D9D9).withOpacity(0.20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: FittedBox(
+                            child: Text(
+                              "Edit Profile",
+                              style: GoogleFonts.inriaSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(
+                      width: 15,
+                    ),
+
+                    Expanded(
+                      child: SizedBox(
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            controller.showConfirmPeminjaman();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color(0xFFD9D9D9).withOpacity(0.20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: FittedBox(
+                            child: Text(
+                              "Edit Password",
+                              style: GoogleFonts.inriaSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(
+                  height: height * 0.010,
+                ),
+
                 kontenProfileUser(
                     'Nama Lengkap : ${dataUser?.namaLengkap.toString()}'),
                 kontenProfileUser(

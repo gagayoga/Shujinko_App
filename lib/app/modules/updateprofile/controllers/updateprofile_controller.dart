@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shujinko_app/app/data/model/user/response_data_profile.dart';
 
 import '../../../data/constant/endpoint.dart';
-import '../../../data/model/user/response_data_profile.dart';
 import '../../../data/provider/api_provider.dart';
 
 class UpdateprofileController extends GetxController with StateMixin{
@@ -18,6 +18,9 @@ class UpdateprofileController extends GetxController with StateMixin{
   final TextEditingController teleponController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController namalengkapController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  var isPasswordHidden = true.obs;
 
   @override
   void onInit() {
@@ -53,6 +56,7 @@ class UpdateprofileController extends GetxController with StateMixin{
           teleponController.text = detailProfile.value!.telepon.toString();
           usernameController.text = detailProfile.value!.username.toString();
           namalengkapController.text = detailProfile.value!.namaLengkap.toString();
+          passwordController.text = detailProfile.value!.password.toString();
           change(null, status: RxStatus.success());
         }
       } else {

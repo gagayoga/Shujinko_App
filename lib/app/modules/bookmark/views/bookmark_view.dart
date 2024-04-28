@@ -164,11 +164,18 @@ class BookmarkView extends GetView<BookmarkController> {
               padding: const EdgeInsets.only(bottom: 15),
               child: InkWell(
                 onTap: (){
-                  dataHistory.status == 'Selesai' ? controller.kontenBeriUlasan(dataHistory.bukuId.toString(), dataHistory.judulBuku.toString()) :
-                  Get.toNamed(Routes.BUKTIPEMINJAMAN, parameters: {
-                    'idPeminjaman': dataHistory.peminjamanID.toString(),
-                    'asalHalaman' : 'historyPeminjaman',
-                  });
+                  if(dataHistory.status == 'Booking'){
+                    controller.showConfirmPeminjaman(dataHistory.peminjamanID.toString(), 'booking');
+                  }else if(dataHistory.status == 'Dipinjam'){
+                    Get.toNamed(Routes.BUKTIPEMINJAMAN, parameters: {
+                      'idPeminjaman': dataHistory.peminjamanID.toString(),
+                      'asalHalaman' : 'historyPeminjaman',
+                    });
+                  }else if (dataHistory.status == 'Selesai'){
+                    controller.kontenBeriUlasan(dataHistory.bukuId.toString(), dataHistory.judulBuku.toString());
+                  }else{
+                    return;
+                  }
                 },
                 child: Container(
                   width: MediaQuery.of(Get.context!).size.width,
@@ -203,7 +210,7 @@ class BookmarkView extends GetView<BookmarkController> {
                                 right: 0,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: dataHistory.status == 'Ditolak'
+                                      color: dataHistory.status == 'Terlambat'
                                           ? const Color(0xFFEA1818)
                                           : dataHistory.status == 'Dipinjam'
                                           ? const Color(0xFFFBC446)

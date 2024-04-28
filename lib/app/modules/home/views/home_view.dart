@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
@@ -20,6 +21,12 @@ class HomeView extends GetView<HomeController> {
     double height = MediaQuery.of(context).size.height;
     double barHeight = MediaQuery.of(context).padding.top;
     double bodyHeight = height - barHeight;
+
+    const Color background = Color(0xFF03010E);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: background,
+      statusBarIconBrightness: Brightness.light, // Change this color as needed
+    ));
 
     return Scaffold(
       body: SafeArea(
